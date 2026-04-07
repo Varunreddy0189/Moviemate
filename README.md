@@ -40,14 +40,14 @@ MovieMate AI is an NLP-powered movie recommendation system that combines semanti
 ---
 
 ## Project Structure
-
+```bash
 ├── app.py
 ├── data
 │   └── imdb_top_1000.csv
 ├── movie_embeddings.npy
 ├── README.md
 └── requirements.txt
-
+```
 ## installation
 
 ## 1. Clone the Repository
