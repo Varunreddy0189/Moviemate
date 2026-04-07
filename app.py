@@ -13,12 +13,12 @@ api_key = st.sidebar.text_input(
 
 if api_key:
     genai.configure(api_key=api_key)
-    model_llm = genai.GenerativeModel("gemini-2.5-flash")
+    model_llm = genai.GenerativeModel("gemini-flash-latest")
 else:
     st.warning("Please enter your API key to start the chatbot.")
     st.stop()
 
-model_llm = genai.GenerativeModel("gemini-2.5-flash")
+model_llm = genai.GenerativeModel("gemini-flash-latest")
 
     
 df = pd.read_csv("data/imdb_top_1000.csv")
