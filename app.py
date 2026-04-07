@@ -192,18 +192,18 @@ def extract_filters(query):
     filters = {}
     q = query.lower()
 
-    # 🎭 Actor detection
+    # actor detection
     actor_match = re.search(r"(actor|starring|with)\s([a-zA-Z\s]+)", q)
     if actor_match:
         filters["actor"] = actor_match.group(2).title().strip()
 
-    # 🎬 Genre detection
+    # genre detection
     genres = ["action", "comedy", "drama", "thriller", "romance", "sci-fi", "adventure"]
     for g in genres:
         if g in q:
             filters["genre"] = g.capitalize()
 
-    # Year filters
+    # year filters
     after_match = re.search(r'after (\d{4})', q)
     if after_match:
         filters["year_after"] = int(after_match.group(1))
@@ -212,7 +212,7 @@ def extract_filters(query):
     if before_match:
         filters["year_before"] = int(before_match.group(1))
 
-    # ⭐ Rating
+    # rating
     if "high rated" in q or "top rated" in q:
         filters["min_rating"] = 8.0
 
@@ -252,14 +252,14 @@ def apply_filters(df):
 
 
 def chatbot(query, top_k=5):
-    # 🔹 Extract filters
+    # extract filters
     new_filters = extract_filters(query)
     update_memory(new_filters)
 
-    # 🔹 Apply filters
+    # apply filters
     filtered_df = apply_filters(df)
 
-    # 🔹 Multi-turn context
+    #multi-turn context
     if len(st.session_state.chat_history) > 0:
         last_user_query = [
             msg for role, msg in reversed(st.session_state.chat_history)
@@ -268,14 +268,14 @@ def chatbot(query, top_k=5):
 
         query = last_user_query + " " + query
 
-    # Filter-based response
+    # filter-based response
     if len(new_filters) > 0:
         if len(filtered_df) == 0:
             return "No exact matches found."
 
         return generate_response(filtered_df, query)
 
-    # Semantic search fallback
+    # semantic search fallback
     query_vector = model.encode([query]).astype("float32")
     distances, indices = index.search(query_vector, top_k)
 
@@ -289,7 +289,7 @@ def chatbot(query, top_k=5):
 import streamlit as st
 
 
-# ---------------- Session Memory ----------------
+# ---------------- session Memory ----------------
 if "chat_memory" not in st.session_state:
     st.session_state.chat_memory = {
         "genre": None,
@@ -299,11 +299,11 @@ if "chat_memory" not in st.session_state:
         "actor": None
     }
 
-# ---------------- Page Config ----------------
+
+#UI streamlit
+
 st.set_page_config(page_title="MovieMate", layout="wide")
 
-
-# ---------------- Styling ----------------
 st.markdown("""
 <style>
 body { background-color: #0e1117; color: white; }
@@ -333,20 +333,17 @@ body { background-color: #0e1117; color: white; }
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- Session State ----------------
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# ---------------- Sidebar ----------------
-st.sidebar.title("🎛 Controls")
+st.sidebar.title("Controls")
 
 top_k = st.sidebar.slider("Number of results", 1, 10, 5)
 
 if st.sidebar.button("🧹 Clear Chat"):
     st.session_state.chat_history = []
 
-# ---------------- Header ----------------
-st.title("🎬 MovieMate AI")
+st.title(" MovieMate")
 st.markdown("Ask anything like: *'action movies after 2015'*")
 
 
@@ -360,11 +357,9 @@ def handle_submit():
         st.session_state.chat_history.append(("user", user_input))
         st.session_state.chat_history.append(("bot", response))
 
-        # ✅ Safe clear
         st.session_state.input_box = ""
 
 
-# ---------------- Fixed Bottom Input ----------------
 st.markdown("""
 <style>
 .bottom-input {
@@ -394,7 +389,7 @@ with st.container():
 
 
 
-# ---------------- Chat Display ----------------
+
 chat_container = st.container()
 
 with chat_container:
