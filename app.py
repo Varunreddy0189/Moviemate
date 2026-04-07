@@ -1,8 +1,22 @@
 import pandas as pd
-
+import streamlit as st
 import google.generativeai as genai
 
-genai.configure(api_key="AIzaSyA_i-zo9fJrmDMorj8OI1MPICbvccNJ6RU")
+#API Key 
+st.sidebar.subheader(" Enter Gemini API Key")
+
+api_key = st.sidebar.text_input(
+    "API Key",
+    type="password",
+    placeholder="Paste your Gemini API key here..."
+)
+
+if api_key:
+    genai.configure(api_key=api_key)
+    model_llm = genai.GenerativeModel("gemini-2.5-flash")
+else:
+    st.warning("Please enter your API key to start the chatbot.")
+    st.stop()
 
 model_llm = genai.GenerativeModel("gemini-2.5-flash")
 
@@ -150,7 +164,7 @@ Summary: {row['Summary']}
         history += f"{prefix}: {msg}\n"
 
 
-    # 🔹 Final prompt
+    # Final prompt
     prompt = f"""
 You are a conversational movie assistant like ChatGPT.
 
@@ -285,8 +299,6 @@ def chatbot(query, top_k=5):
     results = df.iloc[indices[0]]
     return generate_response(results, query)
 
-
-import streamlit as st
 
 
 # ---------------- session Memory ----------------
