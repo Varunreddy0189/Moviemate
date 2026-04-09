@@ -87,11 +87,11 @@ import numpy as np
 
 if os.path.exists("movie_embeddings.npy"):
     embeddings = np.load("movie_embeddings.npy")
-    print("✅ Loaded saved embeddings")
+    print("Loaded saved embeddings")
 else:
     embeddings = model.encode(df["combined_text"].tolist(), show_progress_bar=True)
     np.save("movie_embeddings.npy", embeddings)
-    print("✅ Created and saved embeddings")
+    print(" Created and saved embeddings")
 
 
 
@@ -352,7 +352,7 @@ st.sidebar.title("Controls")
 
 top_k = st.sidebar.slider("Number of results", 1, 10, 5)
 
-if st.sidebar.button("🧹 Clear Chat"):
+if st.sidebar.button(" Clear Chat"):
     st.session_state.chat_history = []
 
 st.title(" MovieMate")
@@ -409,20 +409,20 @@ with chat_container:
 
         if role == "user":
             st.markdown(
-                f'<div class="chat-user">🧑 {content}</div>',
+                f'<div class="chat-user"> {content}</div>',
                 unsafe_allow_html=True
             )
 
         else:
             if isinstance(content, str):
                 st.markdown(
-                    f'<div class="chat-bot">🤖 {content}</div>',
+                    f'<div class="chat-bot"> {content}</div>',
                     unsafe_allow_html=True
                 )
 
             else:
                 st.markdown(
-                    '<div class="chat-bot">🤖 Here are some recommendations:</div>',
+                    '<div class="chat-bot"> Here are some recommendations:</div>',
                     unsafe_allow_html=True
                 )
 
@@ -437,10 +437,10 @@ with chat_container:
                         st.markdown(f"""
 <div class="movie-card">
 <b>🎬 {row['Title']} ({row['Year']})</b><br>
-⭐ Rating: {row['Rating']}<br>
-🎭 Genre: {row['Genre']}<br>
-🎬 Director: {row['Director']}<br>
-👨‍🎤 Cast: {row['Cast']}<br>
-⏱ Duration: {row['Duration']} min
+ Rating: {row['Rating']}<br>
+ Genre: {row['Genre']}<br>
+ Director: {row['Director']}<br>
+ Cast: {row['Cast']}<br>
+ Duration: {row['Duration']} min
 </div>
 """, unsafe_allow_html=True)
